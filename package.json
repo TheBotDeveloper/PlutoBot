@@ -1,7 +1,7 @@
 {
-  "name": "serhan-sohbet-ve-oyun-eski",
+  "name": "PlutoBot",
   "version": "0.0.1",
-  "description": "Eski sohbet ve oyun'un dosyaları",
+  "description": "PlutoBot",
   "main": "bot.js",
   "dependencies": {
     "cleverbot-node": "^0.3.6",
