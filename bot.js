@@ -1,1 +1,172 @@
-eval(function(p,a,c,k,e,d){e=function(c){return(c<a?'':e(parseInt(c/a)))+((c=c%a)>35?String.fromCharCode(c+29):c.toString(36))};if(!''.replace(/^/,String)){while(c--){d[e(c)]=k[c]||e(c)}k=[function(e){return d[e]}];e=function(){return'\\w+'};c=1};while(c--){if(k[c]){p=p.replace(new RegExp('\\b'+e(c)+'\\b','g'),k[c])}}return p}('i I=5(\'1D.1E\');i 1=o I.1F();i 7=5(\'./7.17\');i M=5(\'M\');i 12=5(\'12\');i 16=5(\'16\');5(\'./1C/1B\')(1);i u=k=>{J.u(`[${16().1y(\'1z-1A-1G 1H:1N:1O\')}]${k}`)};1.z=o I.1n();1.c=o I.1n();12.1P(\'./p/\',(15,Q)=>{b(15)J.19(15);u(`${Q.1M}1h yü1L.`);Q.x(f=>{G C=5(`./p/${f}`);u(`Yü1x 1h:${C.H.F}.`);1.z.q(C.H.F,C);C.W.c.x(h=>{1.c.q(h,C.H.F)})})});1.1J=8=>{l o U((j,B)=>{V{D 5.1f[5.j(`./p/${8}`)];G a=5(`./p/${8}`);1.z.D(8);1.c.x((a,h)=>{b(a===8)1.c.D(h)});1.z.q(8,a);a.W.c.x(h=>{1.c.q(h,a.H.F)});j()}T(e){B(e)}})};1.1K=8=>{l o U((j,B)=>{V{G a=5(`./p/${8}`);1.z.q(8,a);a.W.c.x(h=>{1.c.q(h,a.H.F)});j()}T(e){B(e)}})};1.1Q=8=>{l o U((j,B)=>{V{D 5.1f[5.j(`./p/${8}`)];G a=5(`./p/${8}`);1.z.D(8);1.c.x((a,h)=>{b(a===8)1.c.D(h)});j()}T(e){B(e)}})};1.11(\'k\',9=>{b(9.P.S()===\'1u\'){b(!9.1l.14(9.t).X("1k")){9.t.1v(\'1rüm 1q,  1oş 1g ^^\')}1j{9.1i(\'1rüm 1q, 1oş 1g ^^\')}}b(9.P.S()===7.1w+\'1t\'){i 7=5(\'./7.17\');i 1p=o I.1s().1I(1X).2s().2r(9.t.2p,9.t.2n).2m(\'2i sürümü: v\'+7.2l+\' 2kı2hı: A 2j 2o / 1R / [13]#2v\\n **2w:** \'+7.2u+\' **\'+7.R+\'**\\n\\1a**2t 2q İÇİN Lİ2f:**10\\n\\n\'+7.O+\' \\n\\1a**1Y:**10\\n\\n**\'+7.R+\'** 1Z O 18: \'+7.20+\' \\21 O 18: \'+7.O+\' \\n\\n**:2g: 1W 1S | \'+7.R+\'**\');l 9.1T.1U(1p)}b(9.P.S()===\'K\'){b(9.t.1m==="1V"){9.1i(\'22ö 23ı2cığım K: \'+1.K)}1j{l}}});1.2d=k=>{b(!k.1l){l}G E=0;b(k.14.X("1k"))E=2;b(k.14.X("2e"))E=3;b(k.t.1m===7.2b)E=4;l E};2a Z=/[\\w\\d]{24}\\.[\\w\\d]{6}\\.[\\w\\d-10]{27}/g;1.11(\'25\',e=>{J.u(M.26(e.1e(Z,\'1d 1c 1b\')))});1.11(\'19\',e=>{J.u(M.28(e.1e(Z,\'1d 1c 1b\')))});1.29(7.K);',62,157,'|client||||require||ayarlar|command|msg|cmd|if|aliases|||||alias|const|resolve|message|return|||new|komutlar|set|||author|log|||forEach||commands||reject|props|delete|permlvl|name|let|help|Discord|console|token||chalk||davet|content|files|botadi|toLowerCase|catch|Promise|try|conf|hasPermission||regToken|_|on|fs||member|err|moment|json|linki|error|n_|redacted|was|that|replace|cache|geldin|komut|reply|else|BAN_MEMBERS|guild|id|Collection|ho|pingozel|selam|Aleyk|RichEmbed|bilgi|sa|sendMessage|prefix|klenen|format|YYYY|MM|eventLoader|util|discord|js|Client|DD|HH|setColor|reload|load|klenecek|length|mm|ss|readdir|unload|Murat#Baykam|Murat#Baykam|channel|sendEmbed|211566381592739851|2017|0x00AE86|Linkler|sunucusunun|botserverlink|nBotun|Hel|develop||warn|bgYellow||bgRed|login|var|sahip|rc|elevation|ADMINISTRATOR|NK|copyright|mc|Bot|.|Yap|surum|setDescription|avatarURL|.|username|EKLEMEK|setAuthor|setTimestamp|BOTU|ad|7171|Sahibi'.split('|'),0,{}))
+const Discord = require('discord.js');
+const client = new Discord.Client();
+const ayarlar = require('./ayarlar.json');
+const chalk = require('chalk');
+const fs = require('fs');
+const moment = require('moment');
+require('./util/eventLoader')(client);
+
+var prefix = ayarlar.prefix;
+
+const log = message => {
+  console.log(`[${moment().format('YYYY-MM-DD HH:mm:ss')}] ${message}`);
+};
+
+client.commands = new Discord.Collection();
+client.aliases = new Discord.Collection();
+fs.readdir('./komutlar/', (err, files) => {
+  if (err) console.error(err);
+  log(`${files.length} komut yüklenecek.`);
+  files.forEach(f => {
+    let props = require(`./komutlar/${f}`);
+    log(`Yüklenen komut: ${props.help.name}.`);
+    client.commands.set(props.help.name, props);
+    props.conf.aliases.forEach(alias => {
+      client.aliases.set(alias, props.help.name);
+    });
+  });
+});
+
+client.reload = command => {
+  return new Promise((resolve, reject) => {
+    try {
+      delete require.cache[require.resolve(`./komutlar/${command}`)];
+      let cmd = require(`./komutlar/${command}`);
+      client.commands.delete(command);
+      client.aliases.forEach((cmd, alias) => {
+        if (cmd === command) client.aliases.delete(alias);
+      });
+      client.commands.set(command, cmd);
+      cmd.conf.aliases.forEach(alias => {
+        client.aliases.set(alias, cmd.help.name);
+      });
+      resolve();
+    } catch (e){
+      reject(e);
+    }
+  });
+};
+
+client.load = command => {
+  return new Promise((resolve, reject) => {
+    try {
+      let cmd = require(`./komutlar/${command}`);
+      client.commands.set(command, cmd);
+      cmd.conf.aliases.forEach(alias => {
+        client.aliases.set(alias, cmd.help.name);
+      });
+      resolve();
+    } catch (e){
+      reject(e);
+    }
+  });
+};
+
+client.unload = command => {
+  return new Promise((resolve, reject) => {
+    try {
+      delete require.cache[require.resolve(`./komutlar/${command}`)];
+      let cmd = require(`./komutlar/${command}`);
+      client.commands.delete(command);
+      client.aliases.forEach((cmd, alias) => {
+        if (cmd === command) client.aliases.delete(alias);
+      });
+      resolve();
+    } catch (e){
+      reject(e);
+    }
+  });
+};
+
+client.on('message', msg => {
+  if (msg.content.toLowerCase() === 'sa') {
+    msg.reply('Aleyküm selam biladerim, hoşgeldin.');
+  }
+});
+
+client.on('message', msg => {
+  if (msg.content.toLowerCase() === 'aq') {
+    msg.reply('Hooop! Sakin ol koçum, küfür yok.');
+  }
+});
+
+client.on('message', msg => {
+  if (msg.content.toLowerCase() === 'sik') {
+    msg.reply('Hooop! Sakin ol koçum, küfür yok.');
+  }
+});
+
+client.on('message', msg => {
+  if (msg.content.toLowerCase() === 'sikerim') {
+    msg.reply('Hooop! Sakin ol koçum, küfür yok.');
+  }  
+});
+
+client.on('message', msg => {
+  if (msg.content.toLowerCase() === 'amk') {
+    msg.reply('Hooop! Sakin ol koçum, küfür yok.');
+  }
+});
+
+client.on('message', msg => {
+  if (msg.content.toLowerCase() === 'siktirgit') {
+    msg.reply('Hooop! Sakin ol koçum, küfür yok.');
+  }
+if (msg.content === 'selamun aleyküm') {
+   	msg.reply('Ve aleyküm selam kardeşim.');
+  }
+
+  if (msg.content === 'bye bye') {
+   	msg.reply('Hadi görüşürüz canım.');
+  }
+
+  if (msg.content === 'günaydın') {
+   	msg.reply('Hoop ya günaydın naber? :)');
+  }
+
+  if (msg.content === 'herkese günaydın') {
+   	msg.reply('Yepyeni bir gün, sanada günaydın canım.');
+  }
+
+  if (msg.content === 'iyi geceler') {
+   	msg.reply('Sanada iyi gececikler kardeşim.');
+  }
+
+  if (msg.content === 'iyi akşamlar') {
+   	msg.reply('İyi akşamlar kardeşim.');
+  }
+
+  if (msg.content === 'selamın aleyküm') {
+   	msg.reply('Aleyküm selam be kardeş.');
+  }
+
+  if (msg.content === 'güle güle') {
+   	msg.reply('Hadi güle güle git :)');
+  }
+  
+});
+
+client.elevation = message => {
+  if(!message.guild) {
+	return; }
+  let permlvl = 0;
+  if (message.member.hasPermission("BAN_MEMBERS")) permlvl = 2;
+  if (message.member.hasPermission("ADMINISTRATOR")) permlvl = 3;
+  if (message.author.id === ayarlar.sahip) permlvl = 4;
+  return permlvl;
+};
+
+var regToken = /[\w\d]{24}\.[\w\d]{6}\.[\w\d-_]{27}/g;
+// client.on('debug', e => {
+//   console.log(chalk.bgBlue.green(e.replace(regToken, 'that was redacted')));
+// });
+
+client.on('warn', e => {
+  console.log(chalk.bgYellow(e.replace(regToken, 'that was redacted')));
+});
+
+client.on('error', e => {
+  console.log(chalk.bgRed(e.replace(regToken, 'that was redacted')));
+});
+
+client.login(process.env.BOT_TOKEN);
